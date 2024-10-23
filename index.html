@@ -21,6 +21,14 @@
             margin: 10px;
             padding: 10px;
         }
+        #videoPlayer {
+            display: none; /* Hide the video element initially */
+        }
+        #youtubePlayer {
+            display: none; /* Hide the YouTube iframe initially */
+            width: 640px; 
+            height: 360px;
+        }
     </style>
 </head>
 <body>
@@ -33,14 +41,42 @@
         <video id="videoPlayer" width="640" height="360" controls>
             Your browser does not support the video tag.
         </video>
+        <iframe id="youtubePlayer" src="" frameborder="0" allowfullscreen></iframe>
     </div>
 
     <script>
         function playVideo() {
             const url = document.getElementById('videoUrl').value;
             const videoPlayer = document.getElementById('videoPlayer');
-            videoPlayer.src = url;
-            videoPlayer.load();
+            const youtubePlayer = document.getElementById('youtubePlayer');
+
+            // Reset visibility
+            videoPlayer.style.display = 'none';
+            youtubePlayer.style.display = 'none';
+
+            // Check if the URL is a YouTube link
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                const videoId = extractYouTubeID(url);
+                if (videoId) {
+                    youtubePlayer.src = `https://www.youtube.com/embed/${videoId}`;
+                    youtubePlayer.style.display = 'block'; // Show the YouTube iframe
+                } else {
+                    alert('Invalid YouTube URL');
+                }
+            } else {
+                // For direct video URLs
+                videoPlayer.src = url;
+                videoPlayer.load();
+                videoPlayer.play(); // Automatically play the video after loading
+                videoPlayer.style.display = 'block'; // Show the video element
+            }
+        }
+
+        function extractYouTubeID(url) {
+            // Regular expression to extract YouTube video ID
+            const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^&\n]{11})/;
+            const matches = url.match(regex);
+            return matches ? matches[1] : null;
         }
     </script>
 </body>
